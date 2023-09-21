@@ -23,42 +23,42 @@ export class Board {
             this.cells.push(row)
         }
     }
-    public getCells(x: number, y: number) {
+    public getCell(x: number, y: number) {
         return this.cells[y][x]
     }
     private addPawns() {
         this.cells[1].forEach((el, ind) => {
-            new Pawn(Colors.BLACK, this.getCells(ind, 1))
+            new Pawn(Colors.BLACK, this.getCell(ind, 1))
         })
         this.cells[6].forEach((el, ind) => {
-            new Pawn(Colors.WHITE, this.getCells(ind, 6))
+            new Pawn(Colors.WHITE, this.getCell(ind, 6))
         })
     }
     private addKings() {
-        new King(Colors.BLACK, this.getCells(4, 0))
-        new King(Colors.WHITE, this.getCells(4, 7))
+        new King(Colors.BLACK, this.getCell(4, 0))
+        new King(Colors.WHITE, this.getCell(4, 7))
     }
     private addQueens() {
-        new Queen(Colors.BLACK, this.getCells(3, 0))
-        new Queen(Colors.WHITE, this.getCells(3, 7))
+        new Queen(Colors.BLACK, this.getCell(3, 0))
+        new Queen(Colors.WHITE, this.getCell(3, 7))
     }
     private addRooks() {
-        new Rook(Colors.BLACK, this.getCells(0, 0))
-        new Rook(Colors.BLACK, this.getCells(7, 0))
-        new Rook(Colors.WHITE, this.getCells(0, 7))
-        new Rook(Colors.WHITE, this.getCells(7, 7))
+        new Rook(Colors.BLACK, this.getCell(0, 0))
+        new Rook(Colors.BLACK, this.getCell(7, 0))
+        new Rook(Colors.WHITE, this.getCell(0, 7))
+        new Rook(Colors.WHITE, this.getCell(7, 7))
     }
     private addBishops() {
-        new Bishop(Colors.BLACK, this.getCells(2, 0))
-        new Bishop(Colors.BLACK, this.getCells(5, 0))
-        new Bishop(Colors.WHITE, this.getCells(2, 7))
-        new Bishop(Colors.WHITE, this.getCells(5, 7))
+        new Bishop(Colors.BLACK, this.getCell(2, 0))
+        new Bishop(Colors.BLACK, this.getCell(5, 0))
+        new Bishop(Colors.WHITE, this.getCell(2, 7))
+        new Bishop(Colors.WHITE, this.getCell(5, 7))
     }
     private addKnights() {
-        new Knight(Colors.BLACK, this.getCells(1, 0))
-        new Knight(Colors.BLACK, this.getCells(6, 0))
-        new Knight(Colors.WHITE, this.getCells(1, 7))
-        new Knight(Colors.WHITE, this.getCells(6, 7))
+        new Knight(Colors.BLACK, this.getCell(1, 0))
+        new Knight(Colors.BLACK, this.getCell(6, 0))
+        new Knight(Colors.WHITE, this.getCell(1, 7))
+        new Knight(Colors.WHITE, this.getCell(6, 7))
     }
     public addFigures() {
         this.addPawns()
@@ -67,6 +67,19 @@ export class Board {
         this.addRooks()
         this.addBishops()
         this.addKnights()
-
+    }
+    public highlightCells(selectedCell: Cell | null) {
+        for (let i = 0; i < this.cells.length; i++) {
+            const row = this.cells[i]
+            for (let j = 0; j < row.length; j++) {
+                const target = row[j]
+                target.available = !!selectedCell?.figure?.canMove(target)
+            }
+        }
+    }
+    public getCopyBoard(): Board {
+        const newBoard = new Board()
+        newBoard.cells = this.cells
+        return newBoard
     }
 }
